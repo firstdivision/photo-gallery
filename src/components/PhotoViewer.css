@@ -169,8 +169,10 @@
 
 .photo-info {
   position: relative;
-  width: 100%;
+  width: calc(100% + 24px);
   margin-top: 12px;
+  margin-left: -12px;
+  margin-right: -12px;
   text-align: left;
   color: #fff;
   background-color: rgba(0, 0, 0, 0.5);

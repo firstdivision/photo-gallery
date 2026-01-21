@@ -14,6 +14,7 @@ export function PhotoViewer({ photos, initialIndex = 0, onClose }) {
   const [exifData, setExifData] = useState(null);
   const [dominantColor, setDominantColor] = useState('#ffffff');
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [showInfoBox, setShowInfoBox] = useState(true);
   const photoRef = useRef(null);
   const viewerRef = useRef(null);
 
@@ -34,11 +35,15 @@ export function PhotoViewer({ photos, initialIndex = 0, onClose }) {
         e.preventDefault();
         handleToggleFullscreen();
       }
+      if (e.key === 'i' || e.key === 'I') {
+        e.preventDefault();
+        setShowInfoBox(!showInfoBox);
+      }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [currentIndex, isFullscreen]);
+  }, [currentIndex, isFullscreen, showInfoBox]);
 
   useEffect(() => {
     // Fetch photo metadata (dimensions and file size)
@@ -372,7 +377,19 @@ export function PhotoViewer({ photos, initialIndex = 0, onClose }) {
           </div>
         )}
 
-        <div className="photo-info">
+        <button
+          className={`info-toggle-button ${!showInfoBox ? 'visible' : 'hidden'}`}
+          onClick={() => setShowInfoBox(true)}
+          title="Show info (i)"
+          aria-label="Show photo info"
+        >
+          ℹ
+        </button>
+
+        <div 
+          className={`photo-info ${showInfoBox ? 'visible' : 'hidden'}`}
+          onClick={() => setShowInfoBox(false)}
+        >
           {exifData && (
             <div className="exif-data">
               {exifData.Make && exifData.Model && (

@@ -322,6 +322,8 @@
     left: 10px;
     right: auto;
     max-width: 250px;
+    max-height: 40vh;
+    overflow-y: auto;
     padding: 8px 12px;
   }
 
@@ -361,7 +363,10 @@
   }
 
   .photo-info {
+    top: auto;
     bottom: 55px;
+    max-height: 30vh;
+    overflow-y: auto;
   }
 }
 

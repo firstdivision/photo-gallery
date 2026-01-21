@@ -140,15 +140,18 @@
 
 .photo-info {
   position: relative;
-  width: 100%;
+  width: calc(100% + 24px);
+  margin-left: -12px;
+  margin-right: -12px;
+  margin-top: 12px;
   text-align: left;
   color: #fff;
   background-color: rgba(0, 0, 0, 0.5);
   padding: 12px 16px;
-  border-radius: 0 0 6px 6px;
+  border-radius: 6px;
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-top: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
   box-sizing: border-box;
 }
 

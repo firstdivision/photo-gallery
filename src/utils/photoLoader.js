@@ -1,4 +1,12 @@
 /**
+ * Gets the correct photo URL with base path
+ */
+export function getPhotoUrl(photoPath) {
+  const base = import.meta.env.BASE_URL || '/photo-gallery/';
+  return `${base}photos${photoPath}`;
+}
+
+/**
  * Loads the photo directory structure and returns a hierarchical menu
  */
 export async function loadPhotoStructure() {

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import * as exifr from 'exifr';
 import './PhotoViewer.css';
+import { getPhotoUrl } from '../utils/photoLoader';
 
 export function PhotoViewer({ photos, initialIndex = 0, onClose }) {
   const [currentIndex, setCurrentIndex] = useState(initialIndex);
@@ -41,7 +42,7 @@ export function PhotoViewer({ photos, initialIndex = 0, onClose }) {
     // Fetch photo metadata (dimensions and file size)
     const fetchPhotoMeta = async () => {
       try {
-        const photoPath = `/photos${currentPhoto.path}`;
+        const photoPath = getPhotoUrl(currentPhoto.path);
         const response = await fetch(photoPath, { method: 'HEAD' });
         const fileSize = response.headers.get('content-length');
         
@@ -307,7 +308,7 @@ export function PhotoViewer({ photos, initialIndex = 0, onClose }) {
 
         <img
           ref={photoRef}
-          src={`/photos${currentPhoto.path}`}
+          src={getPhotoUrl(currentPhoto.path)}
           alt={currentPhoto.name}
           className="photo"
           onMouseDown={handleMouseDown}

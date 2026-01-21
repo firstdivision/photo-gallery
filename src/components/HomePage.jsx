@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Masonry from 'react-masonry-css';
 import './HomePage.css';
 import { PhotoViewer } from './PhotoViewer';
+import { getPhotoUrl } from '../utils/photoLoader';
 
 // Category to gradient mapping
 const CATEGORY_GRADIENTS = {
@@ -64,7 +65,7 @@ export function HomePage({ allPhotos = [], config = {} }) {
                 data-category={category}
               >
                 <img
-                  src={`/photos${photo.path}`}
+                  src={getPhotoUrl(photo.path)}
                   alt={photo.name}
                   loading="lazy"
                 />

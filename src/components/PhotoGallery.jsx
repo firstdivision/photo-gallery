@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './PhotoGallery.css';
 import { PhotoViewer } from './PhotoViewer';
+import { getPhotoUrl } from '../utils/photoLoader';
 
 export function PhotoGallery({ photos = [], folderName = 'Photos' }) {
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState(null);
@@ -30,7 +31,7 @@ export function PhotoGallery({ photos = [], folderName = 'Photos' }) {
             onClick={() => setSelectedPhotoIndex(index)}
           >
             <img
-              src={`/photos${photo.path}`}
+              src={getPhotoUrl(photo.path)}
               alt={photo.name}
               loading="lazy"
             />

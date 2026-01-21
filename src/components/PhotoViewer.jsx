@@ -346,15 +346,8 @@ export function PhotoViewer({ photos, initialIndex = 0, onClose }) {
       </button>
 
       <div className="photo-container">
-        <button
-          className="nav-button prev-button"
-          onClick={handlePrevious}
-          aria-label="Previous photo"
-        >
-          ❮
-        </button>
-
         <img
+          key={currentIndex}
           ref={photoRef}
           src={getPhotoUrl(currentPhoto.path)}
           alt={currentPhoto.name}
@@ -445,14 +438,6 @@ export function PhotoViewer({ photos, initialIndex = 0, onClose }) {
             </div>
           )}
         </div>
-
-        <button
-          className="nav-button next-button"
-          onClick={handleNext}
-          aria-label="Next photo"
-        >
-          ❯
-        </button>
       </div>
 
       <div className="photo-navigation-dots">

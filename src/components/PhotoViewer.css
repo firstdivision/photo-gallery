@@ -1,0 +1,446 @@
+.photo-viewer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.95);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+  --accent-color: #ffffff;
+}
+
+.photo-viewer.fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  padding: 0;
+  z-index: 10000;
+}
+
+.close-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 44px;
+  height: 44px;
+  border: none;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--accent-color);
+  font-size: 28px;
+  cursor: pointer;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  z-index: 1001;
+}
+
+.close-button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+}
+
+.fullscreen-button {
+  position: absolute;
+  top: 20px;
+  right: 76px;
+  width: 44px;
+  height: 44px;
+  border: none;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--accent-color);
+  font-size: 24px;
+  cursor: pointer;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  z-index: 1001;
+}
+
+.fullscreen-button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+}
+
+.photo-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  max-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  user-select: none;
+}
+
+.photo {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  box-shadow: 0 0 0 12px var(--accent-color);
+  transition: box-shadow 0.6s ease;
+}
+
+.photo:active {
+  cursor: grabbing;
+}
+
+.nav-button {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  border: none;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: var(--accent-color);
+  font-size: 24px;
+  cursor: pointer;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  z-index: 1;
+}
+
+.nav-button:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+}
+
+.nav-button:active {
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
+.prev-button {
+  left: 20px;
+}
+
+.next-button {
+  right: 20px;
+}
+
+.photo-info {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  max-width: 300px;
+  text-align: left;
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 12px 16px;
+  border-radius: 6px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.photo-name {
+  margin: 0 0 6px 0;
+  font-size: 13px;
+  color: #fff;
+  font-weight: 500;
+  word-break: break-word;
+}
+
+.photo-metadata {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  margin: 0 0 6px 0;
+  font-size: 11px;
+  color: #bbb;
+  flex-wrap: wrap;
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+}
+
+.meta-icon {
+  font-size: 11px;
+}
+
+.meta-separator {
+  color: #666;
+}
+
+.exif-data {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.exif-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: #aaa;
+}
+
+.exif-icon {
+  font-size: 10px;
+  flex-shrink: 0;
+}
+
+.exif-text {
+  word-break: break-word;
+  line-height: 1.3;
+}
+
+.exif-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.exif-badge {
+  display: inline-block;
+  font-size: 10px;
+  color: #ddd;
+  background-color: rgba(255, 255, 255, 0.08);
+  padding: 3px 8px;
+  border-radius: 3px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.photo-counter {
+  margin: 0;
+  font-size: 11px;
+  color: #888;
+}
+
+.photo-viewer.fullscreen .photo-info {
+  display: none;
+}
+
+.photo-viewer.fullscreen .photo-navigation-dots {
+  display: none;
+}
+
+.photo-navigation-dots {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  max-width: 90%;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: none;
+  background-color: rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0;
+}
+
+.dot:hover {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.dot.active {
+  background-color: var(--accent-color);
+  width: 10px;
+  height: 10px;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.4);
+}
+
+@media (max-width: 768px) {
+  .photo-viewer {
+    padding: 10px;
+  }
+
+  .close-button {
+    top: 10px;
+    right: 10px;
+    width: 40px;
+    height: 40px;
+    font-size: 24px;
+  }
+
+  .fullscreen-button {
+    top: 10px;
+    right: 60px;
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+  }
+
+  .photo-container {
+    gap: 0;
+    max-height: 70vh;
+  }
+
+  .nav-button {
+    width: 44px;
+    height: 44px;
+    font-size: 20px;
+  }
+
+  .prev-button {
+    left: 10px;
+  }
+
+  .next-button {
+    right: 10px;
+  }
+
+  .photo-info {
+    top: 10px;
+    left: 10px;
+    right: auto;
+    max-width: 250px;
+    padding: 8px 12px;
+  }
+
+  .photo-name {
+    font-size: 12px;
+  }
+
+  .photo-counter {
+    font-size: 10px;
+  }
+
+  .dot {
+    width: 6px;
+    height: 6px;
+  }
+
+  .dot.active {
+    width: 8px;
+    height: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .photo-container {
+    max-height: 60vh;
+  }
+
+  .nav-button {
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+  }
+
+  .photo-navigation-dots {
+    bottom: 15px;
+    gap: 6px;
+  }
+
+  .photo-info {
+    bottom: 55px;
+  }
+}
+
+.swipe-hint {
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.swipe-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background-color: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  backdrop-filter: blur(8px);
+  animation: swipeHintPulse 2s ease-in-out infinite;
+}
+
+.swipe-arrow {
+  font-size: 18px;
+  color: var(--accent-color, #fff);
+  font-weight: 600;
+  animation: swipeArrowBounce 1s ease-in-out infinite;
+}
+
+.swipe-arrow:first-child {
+  animation-delay: 0.2s;
+}
+
+.swipe-arrow:last-child {
+  animation-delay: 0.4s;
+}
+
+.swipe-text {
+  font-size: 12px;
+  color: #aaa;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin: 0 4px;
+}
+
+@keyframes swipeHintPulse {
+  0%, 100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes swipeArrowBounce {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(4px);
+  }
+}
+
+@media (max-width: 480px) {
+  .swipe-indicator {
+    padding: 10px 12px;
+  }
+
+  .swipe-arrow {
+    font-size: 16px;
+  }
+
+  .swipe-text {
+    font-size: 11px;
+  }
+}

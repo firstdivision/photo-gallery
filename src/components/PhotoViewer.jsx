@@ -343,7 +343,6 @@ export function PhotoViewer({ photos, initialIndex = 0, onClose }) {
       </div>
 
       <div className="photo-info">
-        <p className="photo-name">{currentPhoto.name}</p>
         {exifData && (
           <div className="exif-data">
             {exifData.Make && exifData.Model && (

@@ -397,9 +397,6 @@ export function PhotoViewer({ photos, initialIndex = 0, onClose }) {
             )}
           </div>
         )}
-        <p className="photo-counter">
-          {currentIndex + 1} / {photos.length}
-        </p>
       </div>
 
       <div className="photo-navigation-dots">

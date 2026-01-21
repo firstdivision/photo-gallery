@@ -62,6 +62,6 @@ function scanDirectory(dir) {
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: '/simple-photo-gallery/',
+  base: '/photo-gallery/',
   plugins: [react(), photoScannerMiddleware()],
 })

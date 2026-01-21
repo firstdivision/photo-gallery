@@ -83,7 +83,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
   gap: 0;
   user-select: none;
 }
@@ -100,6 +100,11 @@
   transition: box-shadow 0.6s ease;
   flex-shrink: 0;
   animation: fadeInPhoto 0.5s ease-in-out;
+}
+
+.photo-viewer.fullscreen .photo {
+  max-width: calc(100vw - 24px);
+  max-height: calc(100vh - 24px);
 }
 
 @keyframes fadeInPhoto {
@@ -313,6 +318,17 @@
 
 .photo-viewer.fullscreen .photo-navigation-dots {
   display: none;
+}
+
+.photo-viewer.fullscreen .info-toggle-button {
+  display: none;
+}
+
+.photo-viewer.fullscreen .photo-container {
+  max-width: calc(100vw - 24px);
+  max-height: calc(100vh - 24px);
+  width: calc(100vw - 24px);
+  height: calc(100vh - 24px);
 }
 
 .photo-navigation-dots {

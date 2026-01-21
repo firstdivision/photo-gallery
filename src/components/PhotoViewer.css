@@ -107,6 +107,8 @@
 
 .nav-button {
   position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
   width: 50px;
   height: 50px;
   border: none;
@@ -438,6 +440,10 @@
 }
 
 @media (max-width: 768px) {
+  .photo {
+    max-height: 50vh;
+  }
+
   .photo-info {
     width: 100%;
     margin-top: 12px;
@@ -464,6 +470,10 @@
 }
 
 @media (max-width: 480px) {
+  .photo {
+    max-height: 40vh;
+  }
+
   .photo-info {
     width: 100%;
     margin-top: 12px;

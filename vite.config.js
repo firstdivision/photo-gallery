@@ -83,6 +83,6 @@ function photosJsonPlugin() {
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: '/photo-gallery/',
+  base: '/',
   plugins: [react(), photosJsonPlugin()],
 })

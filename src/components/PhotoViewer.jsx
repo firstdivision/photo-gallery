@@ -13,7 +13,6 @@ export function PhotoViewer({ photos, initialIndex = 0, onClose }) {
   const [exifData, setExifData] = useState(null);
   const [dominantColor, setDominantColor] = useState('#ffffff');
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const [showSwipeHint, setShowSwipeHint] = useState(true);
   const photoRef = useRef(null);
   const viewerRef = useRef(null);
 
@@ -214,10 +213,6 @@ export function PhotoViewer({ photos, initialIndex = 0, onClose }) {
     const distance = touchStart - touchEnd;
     const isLeftSwipe = distance > 50;
     const isRightSwipe = distance < -50;
-
-    if (isLeftSwipe || isRightSwipe) {
-      setShowSwipeHint(false); // Hide hint after first swipe
-    }
 
     if (isLeftSwipe) handleNext();
     if (isRightSwipe) handlePrevious();
@@ -431,16 +426,6 @@ export function PhotoViewer({ photos, initialIndex = 0, onClose }) {
           />
         ))}
       </div>
-
-      {showSwipeHint && window.innerWidth <= 768 && (
-        <div className="swipe-hint">
-          <div className="swipe-indicator">
-            <span className="swipe-arrow">←</span>
-            <span className="swipe-text">Swipe</span>
-            <span className="swipe-arrow">→</span>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

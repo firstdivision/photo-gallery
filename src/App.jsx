@@ -3,7 +3,6 @@ import './App.css';
 import { Menu } from './components/Menu';
 import { PhotoGallery } from './components/PhotoGallery';
 import { HomePage } from './components/HomePage';
-import { KeyboardShortcutsHint } from './components/KeyboardShortcutsHint';
 import { loadPhotoStructure, flattenPhotos, getPhotosInFolder } from './utils/photoLoader';
 import { loadConfig } from './utils/configLoader';
 
@@ -72,8 +71,6 @@ function App() {
 
   return (
     <div className="app">
-      <KeyboardShortcutsHint />
-      
       {photoStructure && (
         <Menu
           structure={photoStructure}

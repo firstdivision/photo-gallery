@@ -7,6 +7,8 @@ export function PhotoViewer({ photos, initialIndex = 0, onClose }) {
   const [currentIndex, setCurrentIndex] = useState(initialIndex);
   const [touchStart, setTouchStart] = useState(null);
   const [touchEnd, setTouchEnd] = useState(null);
+  const [dragX, setDragX] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
   const [photoMeta, setPhotoMeta] = useState(null);
   const [exifData, setExifData] = useState(null);
   const [dominantColor, setDominantColor] = useState('#ffffff');
@@ -184,11 +186,26 @@ export function PhotoViewer({ photos, initialIndex = 0, onClose }) {
 
   const handleTouchStart = (e) => {
     setTouchStart(e.targetTouches[0].clientX);
+    setIsDragging(true);
+    setDragX(0);
+  };
+
+  const handleTouchMove = (e) => {
+    if (!touchStart || !isDragging) return;
+    
+    const currentX = e.targetTouches[0].clientX;
+    const distance = currentX - touchStart;
+    
+    // Apply resistance for better feel - reduce movement to 1/3 of actual drag
+    // This allows user to see where they're dragging
+    setDragX(distance * 0.5);
   };
 
   const handleTouchEnd = (e) => {
     setTouchEnd(e.changedTouches[0].clientX);
+    setIsDragging(false);
     handleSwipe();
+    setDragX(0);
   };
 
   const handleSwipe = () => {
@@ -282,6 +299,7 @@ export function PhotoViewer({ photos, initialIndex = 0, onClose }) {
       className={`photo-viewer ${isFullscreen ? 'fullscreen' : ''}`}
       style={{ '--accent-color': dominantColor }}
       onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
       <button className="close-button" onClick={onClose} title="Close (ESC)">
@@ -311,6 +329,10 @@ export function PhotoViewer({ photos, initialIndex = 0, onClose }) {
           src={getPhotoUrl(currentPhoto.path)}
           alt={currentPhoto.name}
           className="photo"
+          style={{
+            transform: `translateX(${dragX}px)`,
+            transition: isDragging ? 'none' : 'transform 0.3s ease-out'
+          }}
           onMouseDown={handleMouseDown}
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}

@@ -9,6 +9,7 @@ export function PhotoViewer({ photos, initialIndex = 0, onClose }) {
   const [touchEnd, setTouchEnd] = useState(null);
   const [dragX, setDragX] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
+  const [swipeProgress, setSwipeProgress] = useState(0);
   const [photoMeta, setPhotoMeta] = useState(null);
   const [exifData, setExifData] = useState(null);
   const [dominantColor, setDominantColor] = useState('#ffffff');
@@ -198,6 +199,21 @@ export function PhotoViewer({ photos, initialIndex = 0, onClose }) {
     // Apply resistance for better feel - reduce movement to 1/3 of actual drag
     // This allows user to see where they're dragging
     setDragX(distance * 0.5);
+
+    // Calculate swipe progress (0-1) for visual feedback
+    const SWIPE_THRESHOLD = 50;
+    const progress = Math.min(Math.abs(distance) / SWIPE_THRESHOLD, 1);
+    setSwipeProgress(progress);
+
+    // Trigger haptic feedback when crossing the swipe threshold
+    const absDistance = Math.abs(distance);
+    
+    // Only trigger haptic once when crossing threshold (slight vibration)
+    if (absDistance >= SWIPE_THRESHOLD && progress >= 1 && Math.abs(dragX) < 25) {
+      if (navigator.vibrate) {
+        navigator.vibrate(15); // Short 15ms vibration
+      }
+    }
   };
 
   const handleTouchEnd = (e) => {
@@ -205,17 +221,31 @@ export function PhotoViewer({ photos, initialIndex = 0, onClose }) {
     setIsDragging(false);
     handleSwipe();
     setDragX(0);
+    setSwipeProgress(0);
   };
 
   const handleSwipe = () => {
     if (!touchStart || !touchEnd) return;
 
     const distance = touchStart - touchEnd;
-    const isLeftSwipe = distance > 50;
-    const isRightSwipe = distance < -50;
+    const SWIPE_THRESHOLD = 50;
+    const isLeftSwipe = distance > SWIPE_THRESHOLD;
+    const isRightSwipe = distance < -SWIPE_THRESHOLD;
 
-    if (isLeftSwipe) handleNext();
-    if (isRightSwipe) handlePrevious();
+    if (isLeftSwipe) {
+      handleNext();
+      // Stronger haptic feedback on successful swipe
+      if (navigator.vibrate) {
+        navigator.vibrate(25);
+      }
+    }
+    if (isRightSwipe) {
+      handlePrevious();
+      // Stronger haptic feedback on successful swipe
+      if (navigator.vibrate) {
+        navigator.vibrate(25);
+      }
+    }
 
     setTouchStart(null);
     setTouchEnd(null);
@@ -332,6 +362,15 @@ export function PhotoViewer({ photos, initialIndex = 0, onClose }) {
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
         />
+
+        {isDragging && swipeProgress > 0 && (
+          <div className="swipe-progress-indicator">
+            <div 
+              className={`swipe-progress-bar ${swipeProgress >= 1 ? 'complete' : ''}`}
+              style={{ width: `${Math.min(swipeProgress * 100, 100)}%` }}
+            />
+          </div>
+        )}
 
         <div className="photo-info">
           {exifData && (

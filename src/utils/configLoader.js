@@ -19,7 +19,8 @@ const defaultConfig = {
  */
 export async function loadConfig() {
   try {
-    const response = await fetch('/config.json');
+    const base = import.meta.env.BASE_URL || '/photo-gallery/';
+    const response = await fetch(`${base}config.json`);
     if (!response.ok) {
       console.log('Config file not found, using defaults');
       return defaultConfig;

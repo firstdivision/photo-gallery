@@ -11,7 +11,8 @@ export function getPhotoUrl(photoPath) {
  */
 export async function loadPhotoStructure() {
   try {
-    const response = await fetch('/api/photos');
+    const base = import.meta.env.BASE_URL || '/photo-gallery/';
+    const response = await fetch(`${base}api/photos.json`);
     if (!response.ok) throw new Error('Failed to load photos');
     return await response.json();
   } catch (error) {

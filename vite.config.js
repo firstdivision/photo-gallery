@@ -3,27 +3,6 @@ import react from '@vitejs/plugin-react'
 import fs from 'fs'
 import path from 'path'
 
-// Photo scanning middleware
-function photoScannerMiddleware() {
-  return {
-    name: 'photo-scanner',
-    configureServer(server) {
-      server.middlewares.use('/api/photos', (req, res) => {
-        try {
-          const photosDir = path.join(process.cwd(), 'public', 'photos')
-          const structure = scanDirectory(photosDir)
-          res.setHeader('Content-Type', 'application/json')
-          res.end(JSON.stringify(structure))
-        } catch (error) {
-          console.error('Error scanning photos:', error)
-          res.statusCode = 500
-          res.end(JSON.stringify({ error: 'Failed to scan photos' }))
-        }
-      })
-    }
-  }
-}
-
 function scanDirectory(dir) {
   const result = {
     photos: [],
@@ -60,8 +39,50 @@ function scanDirectory(dir) {
   return result
 }
 
+// Plugin to generate photos.json for both dev and production
+function photosJsonPlugin() {
+  return {
+    name: 'photos-json',
+    configResolved(config) {
+      // Generate the file in the public directory so it's served by Vite in dev
+      const photosDir = path.join(process.cwd(), 'public', 'photos')
+      const structure = scanDirectory(photosDir)
+      const apiDir = path.join(process.cwd(), 'public', 'api')
+      
+      // Create api directory if it doesn't exist
+      if (!fs.existsSync(apiDir)) {
+        fs.mkdirSync(apiDir, { recursive: true })
+      }
+      
+      // Write the photos.json file
+      fs.writeFileSync(
+        path.join(apiDir, 'photos.json'),
+        JSON.stringify(structure, null, 2)
+      )
+    },
+    writeBundle(options) {
+      // Also generate it in dist for production (if different from public)
+      const photosDir = path.join(process.cwd(), 'public', 'photos')
+      const structure = scanDirectory(photosDir)
+      const outputDir = options.dir
+      const apiDir = path.join(outputDir, 'api')
+      
+      // Create api directory if it doesn't exist
+      if (!fs.existsSync(apiDir)) {
+        fs.mkdirSync(apiDir, { recursive: true })
+      }
+      
+      // Write the photos.json file
+      fs.writeFileSync(
+        path.join(apiDir, 'photos.json'),
+        JSON.stringify(structure, null, 2)
+      )
+    }
+  }
+}
+
 // https://vite.dev/config/
 export default defineConfig({
   base: '/photo-gallery/',
-  plugins: [react(), photoScannerMiddleware()],
+  plugins: [react(), photosJsonPlugin()],
 })

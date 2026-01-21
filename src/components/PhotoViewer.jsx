@@ -333,6 +333,63 @@ export function PhotoViewer({ photos, initialIndex = 0, onClose }) {
           onTouchEnd={handleTouchEnd}
         />
 
+        <div className="photo-info">
+          {exifData && (
+            <div className="exif-data">
+              {exifData.Make && exifData.Model && (
+                <div className="exif-item">
+                  <span className="exif-icon">📷</span>
+                  <span className="exif-text">{exifData.Make} {exifData.Model}</span>
+                </div>
+              )}
+              {exifData.LensModel && (
+                <div className="exif-item">
+                  <span className="exif-icon">🔭</span>
+                  <span className="exif-text">{exifData.LensModel}</span>
+                </div>
+              )}
+              <div className="exif-row">
+                {exifData.FocalLength && (
+                  <span className="exif-badge">{exifData.FocalLength}mm</span>
+                )}
+                {exifData.FNumber && (
+                  <span className="exif-badge">f/{exifData.FNumber}</span>
+                )}
+                {exifData.ExposureTime && (
+                  <span className="exif-badge">
+                    {exifData.ExposureTime < 1 
+                      ? `1/${Math.round(1 / exifData.ExposureTime)}s` 
+                      : `${exifData.ExposureTime}s`}
+                  </span>
+                )}
+                {exifData.ISOSpeedRatings && (
+                  <span className="exif-badge">
+                    ISO{' '}
+                    {Array.isArray(exifData.ISOSpeedRatings)
+                      ? exifData.ISOSpeedRatings[0]
+                      : exifData.ISOSpeedRatings}
+                  </span>
+                )}
+              </div>
+              {exifData.DateTimeOriginal && (
+                <div className="exif-item">
+                  <span className="exif-icon">📅</span>
+                  <span className="exif-text">
+                    {new Date(exifData.DateTimeOriginal).toLocaleDateString(
+                      'en-US',
+                      {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric'
+                      }
+                    )}
+                  </span>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+
         <button
           className="nav-button next-button"
           onClick={handleNext}
@@ -340,63 +397,6 @@ export function PhotoViewer({ photos, initialIndex = 0, onClose }) {
         >
           ❯
         </button>
-      </div>
-
-      <div className="photo-info">
-        {exifData && (
-          <div className="exif-data">
-            {exifData.Make && exifData.Model && (
-              <div className="exif-item">
-                <span className="exif-icon">📷</span>
-                <span className="exif-text">{exifData.Make} {exifData.Model}</span>
-              </div>
-            )}
-            {exifData.LensModel && (
-              <div className="exif-item">
-                <span className="exif-icon">🔭</span>
-                <span className="exif-text">{exifData.LensModel}</span>
-              </div>
-            )}
-            <div className="exif-row">
-              {exifData.FocalLength && (
-                <span className="exif-badge">{exifData.FocalLength}mm</span>
-              )}
-              {exifData.FNumber && (
-                <span className="exif-badge">f/{exifData.FNumber}</span>
-              )}
-              {exifData.ExposureTime && (
-                <span className="exif-badge">
-                  {exifData.ExposureTime < 1 
-                    ? `1/${Math.round(1 / exifData.ExposureTime)}s` 
-                    : `${exifData.ExposureTime}s`}
-                </span>
-              )}
-              {exifData.ISOSpeedRatings && (
-                <span className="exif-badge">
-                  ISO{' '}
-                  {Array.isArray(exifData.ISOSpeedRatings)
-                    ? exifData.ISOSpeedRatings[0]
-                    : exifData.ISOSpeedRatings}
-                </span>
-              )}
-            </div>
-            {exifData.DateTimeOriginal && (
-              <div className="exif-item">
-                <span className="exif-icon">📅</span>
-                <span className="exif-text">
-                  {new Date(exifData.DateTimeOriginal).toLocaleDateString(
-                    'en-US',
-                    {
-                      year: 'numeric',
-                      month: 'short',
-                      day: 'numeric'
-                    }
-                  )}
-                </span>
-              </div>
-            )}
-          </div>
-        )}
       </div>
 
       <div className="photo-navigation-dots">

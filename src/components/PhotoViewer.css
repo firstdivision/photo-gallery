@@ -67,6 +67,9 @@
   justify-content: center;
   transition: all 0.2s ease;
   z-index: 1001;
+  touch-action: manipulation;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .fullscreen-button:hover {
@@ -385,6 +388,7 @@
     width: 40px;
     height: 40px;
     font-size: 20px;
+    touch-action: manipulation;
   }
 
   .photo-container {

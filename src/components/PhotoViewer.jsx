@@ -275,11 +275,29 @@ export function PhotoViewer({ photos, initialIndex = 0, onClose }) {
   const handleToggleFullscreen = async () => {
     try {
       if (!isFullscreen) {
+        // Try standard fullscreen API
         if (viewerRef.current?.requestFullscreen) {
           await viewerRef.current.requestFullscreen();
           setIsFullscreen(true);
-        } else if (viewerRef.current?.webkitRequestFullscreen) {
+        } 
+        // Try webkit prefixed version (for older Safari)
+        else if (viewerRef.current?.webkitRequestFullscreen) {
           await viewerRef.current.webkitRequestFullscreen();
+          setIsFullscreen(true);
+        }
+        // Try mozilla prefixed version
+        else if (viewerRef.current?.mozRequestFullScreen) {
+          await viewerRef.current.mozRequestFullScreen();
+          setIsFullscreen(true);
+        }
+        // Try ms prefixed version
+        else if (viewerRef.current?.msRequestFullscreen) {
+          await viewerRef.current.msRequestFullscreen();
+          setIsFullscreen(true);
+        }
+        // Fallback: if fullscreen API not supported, just use CSS fullscreen styling
+        else {
+          console.warn('Fullscreen API not supported on this device');
           setIsFullscreen(true);
         }
       } else {
@@ -287,37 +305,56 @@ export function PhotoViewer({ photos, initialIndex = 0, onClose }) {
       }
     } catch (err) {
       console.error('Error toggling fullscreen:', err);
+      // Even if fullscreen API fails, still toggle the CSS fullscreen class
+      if (!isFullscreen) {
+        setIsFullscreen(true);
+      }
     }
   };
 
   const handleExitFullscreen = async () => {
     try {
-      if (document.fullscreenElement || document.webkitFullscreenElement) {
+      if (document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement) {
         if (document.exitFullscreen) {
           await document.exitFullscreen();
         } else if (document.webkitExitFullscreen) {
           await document.webkitExitFullscreen();
+        } else if (document.mozCancelFullScreen) {
+          await document.mozCancelFullScreen();
+        } else if (document.msExitFullscreen) {
+          await document.msExitFullscreen();
         }
       }
       setIsFullscreen(false);
     } catch (err) {
       console.error('Error exiting fullscreen:', err);
+      // Force exit even if API call fails
+      setIsFullscreen(false);
     }
   };
 
   // Listen for fullscreen changes
   useEffect(() => {
     const handleFullscreenChange = () => {
-      const isCurrentlyFullscreen = !!(document.fullscreenElement || document.webkitFullscreenElement);
+      const isCurrentlyFullscreen = !!(
+        document.fullscreenElement || 
+        document.webkitFullscreenElement ||
+        document.mozFullScreenElement ||
+        document.msFullscreenElement
+      );
       setIsFullscreen(isCurrentlyFullscreen);
     };
 
     document.addEventListener('fullscreenchange', handleFullscreenChange);
     document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+    document.addEventListener('mozfullscreenchange', handleFullscreenChange);
+    document.addEventListener('MSFullscreenChange', handleFullscreenChange);
 
     return () => {
       document.removeEventListener('fullscreenchange', handleFullscreenChange);
       document.removeEventListener('webkitfullscreenchange', handleFullscreenChange);
+      document.removeEventListener('mozfullscreenchange', handleFullscreenChange);
+      document.removeEventListener('MSFullscreenChange', handleFullscreenChange);
     };
   }, []);
 

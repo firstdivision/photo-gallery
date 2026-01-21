@@ -30,7 +30,7 @@
 .gallery-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 20px;
+  gap: 24px;
 }
 
 .photo-thumbnail {
@@ -39,16 +39,18 @@
   border: none;
   background: none;
   cursor: pointer;
-  border-radius: 8px;
+  border-radius: 0;
   overflow: hidden;
   transition: all 0.3s ease;
   padding: 0;
   display: block;
+  box-shadow: 0 0 0 8px #fff;
+  margin: 12px;
 }
 
 .photo-thumbnail:hover {
-  transform: scale(1.05) translateY(-8px);
-  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.7), 0 0 20px rgba(255, 255, 255, 0.1);
+  transform: scale(1.02) translateY(-8px);
+  box-shadow: 0 0 0 8px #fff, 0 20px 48px rgba(0, 0, 0, 0.7);
 }
 
 .photo-thumbnail img {

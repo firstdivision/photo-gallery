@@ -344,19 +344,6 @@ export function PhotoViewer({ photos, initialIndex = 0, onClose }) {
 
       <div className="photo-info">
         <p className="photo-name">{currentPhoto.name}</p>
-        {photoMeta && (
-          <div className="photo-metadata">
-            <span className="meta-item">
-              <span className="meta-icon">📐</span>
-              {photoMeta.width} × {photoMeta.height}
-            </span>
-            <span className="meta-separator">•</span>
-            <span className="meta-item">
-              <span className="meta-icon">💾</span>
-              {photoMeta.fileSize}
-            </span>
-          </div>
-        )}
         {exifData && (
           <div className="exif-data">
             {exifData.Make && exifData.Model && (

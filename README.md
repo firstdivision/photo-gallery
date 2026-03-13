@@ -1,85 +1,97 @@
-# Simple Photo Gallery
+# Photo Gallery
 
-A modern, sleek photo gallery application built with React and Vite. Perfect for photographers to showcase their work with a beautiful dark theme and seamless mobile experience.
+A responsive React + Vite application for presenting curated photo collections with category navigation, fullscreen viewing, and optional metadata tooling.
+
+## Table of Contents
+
+- [Overview](#overview)
+- [Features](#features)
+- [Project Structure](#project-structure)
+- [Getting Started](#getting-started)
+- [Configuration](#configuration)
+- [Usage](#usage)
+- [Utility Scripts](#utility-scripts)
+- [Tech Stack](#tech-stack)
+- [Browser Support](#browser-support)
+- [License](#license)
+- [Support](#support)
+
+## Overview
+
+This project is designed for photographers and visual creators who want a lightweight, modern gallery experience. It supports organized photo categories, mobile-friendly navigation, and optional EXIF handling workflows.
 
 ## Features
 
-- 🎨 **Modern Dark Theme**: Sleek, professional dark UI with dynamic accent colors extracted from photos
-- 📱 **Mobile Optimized**: Fully responsive design that works flawlessly on all devices
-- 🖼️ **Photo Organization**: Hierarchical menu system with category-specific visual indicators
-- 🔄 **Multiple Navigation Methods**:
-  - Click/tap left and right sides of photos
-  - Swipe left/right on mobile (with visual hint)
-  - Arrow key navigation
-  - Keyboard shortcuts (ESC, F for fullscreen)
-- 🎯 **Smart Home Page**: Masonry grid display of all photos with category badges and hover effects
-- 📷 **Photo Metadata**: View dimensions, file size, and complete EXIF camera data
-- 🌈 **Dynamic Colors**: Photo-based accent colors for UI elements (frame borders, buttons, dots)
-- 🏷️ **Category Badges**: Identify which category each photo belongs to with hover labels
-- ⛶ **Fullscreen Mode**: Immersive photo viewing experience (press F or click button)
-- ⌨️ **Keyboard Shortcuts**: On-screen hint showing all available shortcuts on first visit
-- 👆 **Swipe Hints**: Mobile users see subtle animation guiding swipe navigation
-- ⚙️ **Configuration**: Optional `config.json` for customizing site appearance
-- ⚡ **Built with Vite**: Lightning-fast development and production builds
+- Responsive layout for desktop and mobile
+- Category-based organization with visual category indicators
+- Masonry-style homepage preview of all photos
+- Fullscreen photo viewer with keyboard and touch navigation
+- EXIF metadata display (dimensions, file size, camera details)
+- Dynamic accent colors derived from image content
+- First-visit keyboard shortcut and swipe hints
+- Optional `public/config.json` for gallery title and description
 
 ## Project Structure
 
-```
+```text
 public/
+  api/
+    photos.json
   photos/
     Fauna/
-      photo1.jpg
-      photo2.jpg
     Flora/
     Places/
     Streets/
     Things/
+    Things That Fly/
     Water/
-  config.json (optional)
+  config.json
+
+src/
+  components/
+  utils/
+  App.jsx
+  main.jsx
 
 utility-scripts/
-  optimize-photos.sh    - Photo optimization utility
-  sanitize-exif.sh      - EXIF metadata sanitization
+  optimize-photos.sh
+  sanitize-exif.sh
 ```
 
 ## Getting Started
 
+### Prerequisites
+
+- Node.js 18+
+- npm
+
 ### Installation
 
-1. **Install dependencies**:
-   ```bash
-   npm install
-   ```
+```bash
+npm install
+```
 
-2. **Add your photos**:
-   - Place your photos in the `public/photos/` directory
-   - Organize them into folders and subfolders as desired
-   - Supported formats: JPG, JPEG, PNG, GIF, WEBP, SVG
+### Add Photos
 
-3. **(Optional) Create config.json**:
-   ```json
-   {
-     "title": "My Photo Gallery",
-     "description": "Welcome to my photography showcase"
-   }
-   ```
+1. Place photos under `public/photos/`.
+2. Organize photos into category folders as needed.
+3. Supported formats include: `jpg`, `jpeg`, `png`, `gif`, `webp`, `svg`.
 
-### Development
+### Run Locally
 
-Start the development server:
 ```bash
 npm run dev
 ```
 
-The application will be available at `http://localhost:5173`
+Default local URL: `http://localhost:5173`
 
-### Building for Production
+### Build for Production
 
 ```bash
 npm run build
 ```
 
-The optimized build will be in the `dist/` directory.
+Build output is generated in `dist/`.
 
 ### Preview Production Build
 
@@ -87,209 +99,92 @@ The optimized build will be in the `dist/` directory.
 npm run preview
 ```
 
-## Photo Optimization
+## Configuration
 
-To optimize photos for web use, use the provided utility script:
+Create `public/config.json` to customize gallery text:
+
+```json
+{
+  "title": "My Photo Gallery",
+  "description": "Welcome to my photography showcase"
+}
+```
+
+| Option | Type | Default | Description |
+| --- | --- | --- | --- |
+| `title` | string | `Photo Gallery` | Gallery title |
+| `description` | string | `A modern photo gallery` | Gallery subtitle |
+
+## Usage
+
+### Keyboard and Navigation
+
+- `Arrow Left` / `Arrow Right`: previous/next photo
+- `F`: toggle fullscreen
+- `Esc`: close viewer or exit fullscreen
+- Desktop: click photo edges to navigate
+- Mobile: swipe left/right to navigate
+
+### Gallery Behavior
+
+- Use the `All` view to browse every category
+- Select category buttons to filter by folder
+- Hover photos in the homepage grid to view category labels
+
+## Utility Scripts
+
+### Optimize Photos
 
 ```bash
 ./utility-scripts/optimize-photos.sh
 ```
 
-This script will:
-1. **Analyze** your photos and identify any larger than the specified threshold
-2. **Display** a list of photos requiring optimization with their file sizes
-3. **Prompt** you to confirm before proceeding
-4. **Optimize** selected photos by:
-   - Resizing to a maximum of 1400×1400 pixels
-   - Reducing JPEG quality to 80% for better compression
-   - Maintaining aspect ratios
+What it does:
 
-### Usage
+- Finds images above a configurable size threshold
+- Confirms before modifying files
+- Resizes images up to 1400x1400 max
+- Applies JPEG compression (quality 80)
 
-The script will ask you to accept the default threshold (1.5MB) or specify a custom limit:
-
-```
-🎯 Size Threshold Configuration
-Default limit: 1.5MB
-
-Use default threshold? (y/n)
-```
-
-Enter `y` to use the default, or `n` to specify a custom threshold in MB (e.g., `0.5`, `1.0`, `2.0`).
-
-**Note**: Your original photos are safe - git will preserve version history. The script only optimizes in-place and is designed to reduce file sizes for faster web loading while maintaining visual quality.
-
-## EXIF Data Sanitization
-
-To remove personal information from photo metadata while preserving camera settings, use the EXIF sanitization script:
+### Sanitize EXIF Metadata
 
 ```bash
 ./utility-scripts/sanitize-exif.sh
 ```
 
-This script will:
-1. **Scan** all photos for personal EXIF and XMP metadata
-2. **Display** what will be removed before proceeding
-3. **Prompt** for confirmation before sanitization
-4. **Remove** personal information while preserving camera settings
-5. **Report** which files were successfully sanitized
+What it does:
 
-### What Gets Removed
+- Detects personal EXIF/XMP metadata
+- Prompts before changes
+- Removes personal metadata (for example GPS, timestamps, comments)
+- Preserves technical camera settings where possible
 
-- GPS coordinates and location data
-- Date/time information (creation, modification dates)
-- User comments and artist information
-- Copyright notices and software metadata
-- IPTC and XMP personal tags
-
-### What Gets Preserved
-
-- Camera make, model, and body information
-- Lens model and focal length
-- Shutter speed, aperture (f-number), and ISO
-- White balance and metering mode
-- Other technical camera settings
-
-### Prerequisites
-
-The script requires `exiftool` to be installed:
+Prerequisite on Debian/Ubuntu:
 
 ```bash
 sudo apt-get install -y libimage-exiftool-perl
 ```
 
-### Usage
+## Tech Stack
 
-Run the script and follow the prompts:
-
-```bash
-./utility-scripts/sanitize-exif.sh
-```
-
-The script will:
-1. Show all photos with removable personal data
-2. Display the specific EXIF tags that will be removed
-3. Ask for confirmation before proceeding
-4. Sanitize confirmed photos and report results
-
-**Note**: This modifies your original files directly. Ensure you have backups if needed.
-
-## Configuration
-
-Create a `config.json` file in the public directory to customize:
-
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `title` | string | Photo Gallery | Gallery title |
-| `description` | string | A modern photo gallery | Gallery subtitle |
-
-## Usage
-
-### Keyboard Shortcuts
-
-- **Arrow Left/Right (←→)**: Navigate between photos
-- **F**: Toggle fullscreen mode
-- **ESC**: Close photo viewer or exit fullscreen
-- **Click left/right side**: Navigate photos (desktop)
-- **Swipe left/right**: Navigate photos (mobile)
-
-### Photo Viewer Features
-
-- **EXIF Data**: Hover over a photo to see dimensions, file size, and camera metadata
-- **Category Labels**: Hover over masonry grid items to see which category they belong to
-- **Dynamic Colors**: UI accents change based on the dominant color of each photo
-- **Navigation Dots**: Click dots at bottom to jump to specific photos
-
-### Menu Navigation
-
-- **"All" button**: View all photos from all categories
-- **Category buttons**: Click to view photos from a specific category
-- **Left sidebar** (desktop): Full category navigation
-- **Hamburger menu** (mobile): Category navigation drawer
-- **Category borders**: Each category has a unique color-coded border for visual organization
-
-### First Time User Experience
-
-- **Keyboard Shortcuts Hint**: Modal appears on first visit showing all available shortcuts
-- **Swipe Hint**: Mobile users see animated arrows guiding swipe navigation
-- Both hints auto-dismiss and won't show again (unless browser storage is cleared)
-
-## Technologies
-
-- **React 19**: UI library
-- **Vite 7**: Build tool and dev server
-- **Exifr**: EXIF data extraction from photos
-- **React Masonry CSS**: Responsive masonry grid layout
-- **CSS3**: Custom styling with flexbox, grid, and animations
-- **JavaScript ES6+**: Modern JavaScript with async/await
-- **ImageMagick**: Photo optimization (optional, for utility scripts)
-
-## Performance
-
-- Fast photo loading with lazy loading
-- Optimized image rendering
-- Smooth animations and transitions
-- Touch-optimized for mobile devices
+- React 19
+- Vite 7
+- exifr
+- react-masonry-css
+- CSS3
+- JavaScript (ES modules)
 
 ## Browser Support
 
-- Chrome/Edge 90+
+- Chrome / Edge 90+
 - Firefox 88+
 - Safari 14+
-- Mobile browsers (iOS Safari, Chrome Mobile)
-
-## Development
-
-### Project Layout
-
-```
-src/
-  components/
-    Menu.jsx                      - Photo category navigation with color-coded borders
-    PhotoGallery.jsx              - Grid view of photos
-    PhotoViewer.jsx               - Full-screen photo viewer with EXIF data
-    HomePage.jsx                  - Masonry grid with category badges and overlays
-    KeyboardShortcutsHint.jsx     - First-visit keyboard shortcuts hint
-  utils/
-    photoLoader.js                - Photo directory scanning
-    configLoader.js               - Configuration loading
-  App.jsx                         - Main application component
-  main.jsx                        - React entry point
-
-utility-scripts/
-  optimize-photos.sh              - Photo optimization for web
-  sanitize-exif.sh                - Remove personal metadata while preserving camera data
-```
-
-### Key Components Details
-
-**PhotoViewer.jsx**
-- Displays photos in fullscreen modal
-- Extracts and shows EXIF metadata (camera, lens, ISO, aperture, shutter speed, date)
-- Extracts dominant color from image for dynamic UI accents
-- Supports keyboard navigation and fullscreen mode
-- Shows swipe hints on mobile devices
-
-**HomePage.jsx**
-- Masonry grid layout of all photos
-- Category-specific gradient overlays on hover
-- Shows category badges when hovering over photos
-- Dynamic accent colors based on image content
-
-**Menu.jsx**
-- Category navigation with color-coded borders
-- Each category has unique visual identity
-- "All" button to return to home page
-- Responsive: sidebar on desktop, drawer on mobile
+- iOS Safari and Chrome Mobile
 
 ## License
 
-Specify your license here.
+Add your preferred license information here.
 
 ## Support
 
-For issues and feature requests, please open an issue on GitHub.
-
----
-
-Built with ❤️ for photographers
+Use GitHub Issues for bug reports and feature requests.
